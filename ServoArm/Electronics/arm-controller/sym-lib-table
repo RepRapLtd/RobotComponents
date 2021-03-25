@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name arm-controller-rescue)(type Legacy)(uri ${KIPRJMOD}/arm-controller-rescue.lib)(options "")(descr ""))
+)
