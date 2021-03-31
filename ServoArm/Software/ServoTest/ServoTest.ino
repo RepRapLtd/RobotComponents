@@ -1,7 +1,7 @@
 /*
  * RepRap Ltd Robot Components
  * 
- * Servo control program
+ * Gear-chain Servo Test Program
  * Adrian Bowyer
  * 
  * 29 March 2021
@@ -11,15 +11,16 @@
  * 
  */
 
+#include "Encoder.h"
+
 const int pWMPin = 11;                          // Motor PWM in
 const int dirPin = 13;                          // Motor direction
 const int selectPin = 6;                        // Select the AS5040
 const int clockPin = 7;                         // AS5040 clock
 const int dataPin = 2;                          // AS5040 data
-const int clockwise = 1;                        // What to write to the motor to make the output go clockwise
-const float pi = 3.1415926;
-const float readingToRadians = 2.0*pi/1024.0;
-const float readingToDegrees = 180.0/1024.0;
+const int goClockwise = 1;                      // What to write to the motor to make the output go clockwise
+
+const float readingToDegrees = 360.0/1024.0;
 
 float target;                                   // The target angle in radians
 float integral;                                 // The current PID integral
@@ -27,34 +28,36 @@ float lastDA;                                   // The last error
 float proportionalWeight;                       // The PID P weight
 float integralWeight;                           // The PID I weight
 float derivativeWeight;                         // The PID D weight
-float deadZone;                                 // Close enough
+float deadZone;                                 // Close enough (radians)
 unsigned long lastTime;                         // Last time the PID controller was called
 int maxPWM;                                     // Fastest we are allowed to go
 bool eStop;                                     // Emergency stop
 
-enum State {backwards, stopped, forwards};
+enum State {antiClockwise, stopped, clockwise};
 State state;
+
+Encoder* encoder = new Encoder(dataPin, clockPin, selectPin);
 
 //***********************************************************************************
 
 // Motor control
 
-void GoForwards(int pwm)
+void GoClockwise(int pwm)
 {
   digitalWrite(pWMPin, 0);
-  digitalWrite(dirPin, clockwise);
+  digitalWrite(dirPin, goClockwise);
   delay(1);
   analogWrite(pWMPin, pwm);
-  state = forwards; 
+  state = clockwise; 
 }
 
-void GoBackwards(int pwm)
+void GoAntiClockwise(int pwm)
 {
   digitalWrite(pWMPin, 0);
-  digitalWrite(dirPin, 1 - clockwise);
+  digitalWrite(dirPin, 1 - goClockwise);
   delay(1);
   analogWrite(pWMPin, pwm);
-  state = backwards;  
+  state = antiClockwise;  
 }
 
 void SetSpeed(int pwm)
@@ -68,82 +71,14 @@ void Stop()
   state = stopped;  
 }
 
-//*************************************************************************************
 
-// AS5040 magnetic shaft encoder
 
-// Read in a byte of data from the AS5040.
-
-byte ShiftIn(byte data_pin, byte clock_pin)
+float PIDValue(float& absDA)
 {
-  byte data = 0;
-
-  for (int i=7; i>=0; i--)
-  {
-    digitalWrite(clock_pin, LOW);
-    delayMicroseconds(1);
-    digitalWrite(clock_pin, HIGH);
-    delayMicroseconds(1);
-
-    byte bit = digitalRead(data_pin);
-
-    data |= (bit << i);
-
-  }
-
-  //Serial.print("byte: ");
-  //Serial.println(data, BIN);
-
-  return data;
-}
-
-// Read the AS5040's angular position in [0, 1023]
-
-int ReadPosition()
-{
-  unsigned int position = 0;
-
-  //shift in our data  
-  digitalWrite(selectPin, LOW);
-  delayMicroseconds(1);
-  byte d1 = ShiftIn(dataPin, clockPin);
-  byte d2 = ShiftIn(dataPin, clockPin);
-  digitalWrite(selectPin, HIGH);
-
-  //get our position variable
-  position = d1;
-  position = position << 8;
-
-  position |= d2;
-
-  position = position >> 6;
-
-  //check the offset compensation flag: 1 == started up
-  if (!(d2 & B00100000))
-    position = -1;
-
-  //check the cordic overflow flag: 1 = error
-  if (d2 & B00010000)
-    position = -2;
-
-  //check the linearity alarm: 1 = error
-  if (d2 & B00001000)
-    position = -3;
-
-  //check the magnet range: B011 = error
-  if ((d2 & B00000110) == B00000110)
-    position = -4;
-
-  return position;
-}
-
-//*********************************************************************************
-
-float PIDFunction()
-{
-  float angle = (float)ReadPosition()*readingToRadians;
+  float angle = encoder->Angle();
   unsigned long now = micros();
   float dA = target - angle;
+  absDA = fabs(dA);
   float dT = (float)(now - lastTime)*0.000001;
   integral += dA*dT;
   float derivative = (dA - lastDA)/dT;
@@ -160,24 +95,28 @@ void PID()
     Stop();
     return;
   }
-  float pid = PIDFunction();
-  float absPID = fabs(pid);
-  if(absPID < deadZone)
+
+  float absDA;
+  float pid = PIDValue(absDA);
+  if(absDA < deadZone)
   {
     Stop();
     return;
   }
+  
+  float absPID = fabs(pid);
   int pwm = round(absPID);
   if(pwm > maxPWM)
   {
     pwm = maxPWM;
   }
-  if(pid < 0.0 && state == forwards)
+  
+  if(pid < 0.0 && state == clockwise)
   {
-    GoBackwards(pwm);
-  } else if(pid > 0.0 && state == backwards)
+    GoAntiClockwise(pwm);
+  } else if(pid > 0.0 && state == antiClockwise)
   {
-    GoForwards(pwm);
+    GoClockwise(pwm);
   } else
   {
     SetSpeed(pwm);   
@@ -187,20 +126,25 @@ void PID()
 void PrintState()
 {
   Serial.println("\n Current state:");
-  int r = ReadPosition();
+  int r = encoder->Reading();
   Serial.print("  Angle: ");
   Serial.print(r);
   Serial.print(", (");
-  Serial.print((float)r*readingToRadians);
-  Serial.print(" rads, ");
   Serial.print((float)r*readingToDegrees);
-  Serial.println(" degs)");
-  Serial.print("  Target angle (degrees): ");
-  Serial.println(target*180.0/pi);
-  Serial.print("  Dead zone (PID value): ");
+  Serial.print(" degrees, ");
+  Serial.print((float)r*readingToRadians);
+  Serial.println(" radians)");
+  Serial.print("  Target angle: ");
+  Serial.print(target*180.0/PI);
+  Serial.print(" deg, ");
+  Serial.print(target);
+  Serial.println(" radians.");
+  Serial.print("  Dead zone (radians): ");
   Serial.println(deadZone);
   Serial.print("  Current PID: ");
-  Serial.println(PIDFunction());
+  float dummy;
+  float p = PIDValue(dummy);
+  Serial.println(p);
   Serial.print("  Proportional weight: ");
   Serial.println(proportionalWeight);
   Serial.print("  Integral weight: ");
@@ -217,11 +161,14 @@ void PrintState()
 void Prompt()
 {
   Serial.println("\nRepRap Ltd servo test commands:");
-  Serial.println(" s - Emergency stop.");
+  Serial.println(" e - Emergency stop.");
   Serial.println(" r - reset stop.");
   Serial.println(" t X - set target (X degrees).");
-  Serial.println(" p - print state.");
-
+  Serial.println(" s - print state.");
+  Serial.println(" p W - Set proportional weight.");
+  Serial.println(" i W - Set integral weight.");
+  Serial.println(" d W - Set derivative weight.");  
+  Serial.println(" 0 X - Set dead zone (radians).");
   Serial.println(" ? - print this list.\n");
 }
 
@@ -234,23 +181,18 @@ void setup()
   digitalWrite(dirPin, 0);   
   pinMode(pWMPin, OUTPUT);
   digitalWrite(pWMPin, 0);
-  pinMode(dataPin, INPUT);
-  pinMode(clockPin, OUTPUT);
-  pinMode(selectPin, OUTPUT);
-
-  digitalWrite(clockPin, HIGH);
-  digitalWrite(selectPin, HIGH);
 
   Stop();
   
   Serial.begin(9600);
+  Serial.setTimeout(100000);
 
-  target = (float)ReadPosition()*readingToRadians;
+  target = encoder->Angle();
   integral = 0.0;
   proportionalWeight = 1.0;
   integralWeight = 0.0;
   derivativeWeight = 0.0;
-  deadZone = 1.0;
+  deadZone = 0.05;
   lastTime = micros();
   maxPWM = 50;
   eStop = false;
@@ -263,17 +205,19 @@ void setup()
 void loop()
 {
   PID();
+
+  float deg;
   
   if(Serial.available() > 0)
   {   
     char c = (char)Serial.read();
     switch(c)
     {
-     case 'p':
+     case 's':
       PrintState();
       break;
-      
-     case 's':
+
+     case 'e':
       Serial.println("Emergency stop!");
       eStop = true;
       break;
@@ -283,29 +227,48 @@ void loop()
       eStop = false;
       break;
 
+     case 'i':
+      integralWeight = Serial.parseFloat(SKIP_WHITESPACE);
+      Serial.print("Integral weight set to ");
+      Serial.println(integralWeight);
+      break;   
+
+     case 'd':
+      derivativeWeight = Serial.parseFloat(SKIP_WHITESPACE);
+      Serial.print("Derivative weight set to ");
+      Serial.println(derivativeWeight);
+      break;
+
+     case '0':
+      deadZone = Serial.parseFloat(SKIP_WHITESPACE);
+      Serial.print("Deadzone set to ");
+      Serial.println(deadZone);
+      break;
+
+     case 'p':
+      proportionalWeight = Serial.parseFloat(SKIP_WHITESPACE);
+      Serial.print("Proportional weight set to ");
+      Serial.println(proportionalWeight);
+      break;
+
      case 't':
-      int deg = Serial.parseInt();
-      target = deg*pi/180.0;
+      deg = Serial.parseFloat(SKIP_WHITESPACE);
+      target = deg*PI/180.0;
       Serial.print("Target set to ");
       Serial.print(deg);
       Serial.print(" degrees (");
       Serial.print(target);
       Serial.println(" radians).");
       break;
-      
-     case '?':
-      Prompt();
-      break;
         
      default:
       Serial.print("Unrecognised command: ");
       Serial.println(c);
-      Prompt();
 
+     case '?':
+      Prompt();
+      break;     
     }
     while(Serial.available() > 0) Serial.read();
   }
 }
-
-
-
