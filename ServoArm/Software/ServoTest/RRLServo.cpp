@@ -27,14 +27,14 @@ RRLServo::RRLServo(int pwmP, int dirP, Encoder* enc)
   Stop();
   angle = encoder->Angle();
   target = angle;
-  integral = 0.0;
   proportionalWeight = 1.0;
   integralWeight = 0.0;
   derivativeWeight = 0.0;
   deadZone = 0.05;
-  lastTime = micros();
   maxPWM = 50;
-  eStop = false;  
+  eStop = false;
+  averageTime = 0.0;
+  ResetPID(); 
 }
 
 
@@ -47,22 +47,25 @@ void RRLServo::Spin()
   }
 
   angle = encoder->Angle();
-  unsigned long now = micros();
-  float dA = target - angle;
-  float absDA = fabs(dA);
-  float dT = (float)(now - lastTime)*0.000001;
-  integral += dA*dT;
-  float derivative = (dA - lastDA)/dT;
-  lastDA = dA;
-  lastTime = now;
-  pid = proportionalWeight*dA + integralWeight*integral + derivativeWeight*derivative; 
-
-  if(absDA < deadZone)
+  float error = target - angle;
+  
+  if(fabs(error) < deadZone)
   {
     Stop();
     return;
   }
+
+  unsigned long now = micros();
+  float dT = (float)(now - lastTime)*0.000001;
+  averageTime = (averageTime*9.0 + dT)*0.1;
+  integral += error*dT;
+  float derivative = (error - lastError)/dT;
   
+  lastError = error;
+  lastTime = now;
+  
+  pid = proportionalWeight*error + integralWeight*integral + derivativeWeight*derivative; 
+ 
   float absPID = fabs(pid);
   pwm = round(absPID);
   if(pwm > maxPWM)
@@ -70,16 +73,29 @@ void RRLServo::Spin()
     pwm = maxPWM;
   }
   
-  if(pid < 0.0 && state == clockwise)
+  if(pid < 0.0 && (state == clockwise || state == stopped))
   {
     GoAntiClockwise();
-  } else if(pid > 0.0 && state == antiClockwise)
+  } else if(pid > 0.0 && (state == antiClockwise || state == stopped))
   {
     GoClockwise();
   } else
   {
     SetSpeed();   
   }  
+}
+
+void RRLServo::ResetPID()
+{
+  integral = 0.0;
+  lastTime = micros();
+  lastError = 0.0;
+}
+
+void RRLServo::SetTarget(float t)
+{
+  target = t;
+  ResetPID();
 }
 
 
@@ -89,27 +105,29 @@ void RRLServo::PrintState()
   Serial.print("  Encoder reading: ");
   Serial.println(encoder->Reading());
   Serial.print("  Angle: ");
-  Serial.print(angle);
+  Serial.print(angle, 4);
   Serial.print(" radians (");
-  Serial.print(angle*180.0/PI);
+  Serial.print(angle*180.0/PI, 4);
   Serial.println(" degrees)");
   Serial.print("  Target angle: ");
-  Serial.print(target);
+  Serial.print(target, 4);
   Serial.print(" radians, (");
-  Serial.print(target*180.0/PI);
+  Serial.print(target*180.0/PI, 4);
   Serial.println(" degrees)");
   Serial.print("  Dead zone (radians): ");
-  Serial.println(deadZone);
+  Serial.println(deadZone, 4);
   Serial.print("  Current PID: ");
-  Serial.println(pid);
+  Serial.println(pid, 4);
   Serial.print("  Proportional weight: ");
-  Serial.println(proportionalWeight);
+  Serial.println(proportionalWeight, 4);
   Serial.print("  Integral weight: ");
-  Serial.println(integralWeight);
+  Serial.println(integralWeight, 4);
   Serial.print("  Derivative weight: ");
-  Serial.println(derivativeWeight);
+  Serial.println(derivativeWeight, 4);
   Serial.print("  Maximum PWM: ");
   Serial.println(maxPWM);
+  Serial.print("  Rolling average dT (mS): ");
+  Serial.println(averageTime*1000.0, 4);  
   Serial.print("  State is: ");
   switch(state)
   {
@@ -157,4 +175,42 @@ void RRLServo::Stop()
 {
   analogWrite(pwmPin, 0);
   state = stopped;  
+}
+
+void RRLServo::Clockwise(float seconds)
+{
+  if(eStop)
+    return;
+  eStop = true;
+  int oldPWM = pwm;
+  pwm = maxPWM/2;
+  GoClockwise();
+  delay((long)(seconds*1000.0));
+  Stop();
+  angle = encoder->Angle();
+  target = angle;
+  pwm = oldPWM;
+  Reset();    
+}
+
+void RRLServo::AntiClockwise(float seconds)
+{
+  if(eStop)
+    return;
+  eStop = true;
+  int oldPWM = pwm;
+  pwm = maxPWM/2;
+  GoAntiClockwise();
+  delay((long)(seconds*1000.0));
+  Stop();
+  angle = encoder->Angle();
+  target = angle;
+  pwm = oldPWM;
+  Reset();    
+}
+
+void RRLServo::EStop()
+{
+  eStop = true;
+  Stop();
 }

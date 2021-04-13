@@ -37,6 +37,9 @@ void Prompt()
   Serial.println(" i W - Set integral weight.");
   Serial.println(" d W - Set derivative weight.");  
   Serial.println(" 0 X - Set dead zone (radians).");
+  Serial.println(" m P - Set maximum PWM [0, 255].");
+  Serial.println(" c T - Go clockwise for T seconds."); 
+  Serial.println(" a T - Go anticlockwise for T seconds.");  
   Serial.println(" ? - print this list.\n");
 }
 
@@ -59,6 +62,7 @@ void loop()
   servo->Spin();
 
   float x;
+  int i;
   
   if(Serial.available() > 0)
   {   
@@ -117,7 +121,30 @@ void loop()
       Serial.println(" radians).");
       servo->SetTarget(x);
       break;
-        
+
+     case 'm':
+      i = Serial.parseInt(SKIP_WHITESPACE);
+      Serial.print("Setting max PWM to ");
+      Serial.println(i);
+      servo->SetMaximumPWM(i);
+      break;
+
+     case 'c':
+      x = Serial.parseFloat(SKIP_WHITESPACE);
+      Serial.print("Going clockwise for ");
+      Serial.print(x);
+      Serial.println(" seconds.");
+      servo->Clockwise(x);
+      break;
+
+     case 'a':
+      x = Serial.parseFloat(SKIP_WHITESPACE);
+      Serial.print("Going anticlockwise for ");
+      Serial.print(x);
+      Serial.println(" seconds.");
+      servo->AntiClockwise(x);
+      break;
+      
      default:
       Serial.print("Unrecognised command: ");
       Serial.println(c);

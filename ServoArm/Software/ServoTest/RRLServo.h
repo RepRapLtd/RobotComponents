@@ -34,8 +34,11 @@ class RRLServo
     void SetMaximumPWM(int maxP);
     void EStop();
     void Reset();
+    void ResetPID();
     float Angle();
     void PrintState();
+    void Clockwise(float seconds);
+    void AntiClockwise(float seconds);
 
   private:
 
@@ -50,7 +53,7 @@ class RRLServo
     int pwm;                                        // The motor PWM value
     float pid;                                      // The currect pid value
     float integral;                                 // The current PID integral
-    float lastDA;                                   // The last error
+    float lastError;                                // The last error
     float proportionalWeight;                       // The PID P weight
     float integralWeight;                           // The PID I weight
     float derivativeWeight;                         // The PID D weight
@@ -59,32 +62,52 @@ class RRLServo
     int maxPWM;                                     // Fastest we are allowed to go
     bool eStop;                                     // Emergency stop    
     State state;                                    // What we are doing
+    float averageTime;
     
     int pwmPin;
     int directionPin;
 };
 
 
-inline void RRLServo::SetTarget(float t) { target = t; }
-
-inline void RRLServo::SetProportionalWeight(float w) { proportionalWeight = w; }
-
-inline void RRLServo::SetIntegralWeight(float w) { integralWeight = w; }
-
-inline void RRLServo::SetDerivativeWeight(float w) { derivativeWeight = w; }
-
-inline void RRLServo::SetDeadZone(float dz) { deadZone = dz; }
-
-inline void RRLServo::SetMaximumPWM(int maxP) { maxPWM = maxP; }
-
-inline void RRLServo::EStop()
+inline void RRLServo::SetProportionalWeight(float w)
 {
-  eStop = true;
-  Stop();
+  proportionalWeight = w;
+  ResetPID();
 }
 
-inline void RRLServo::Reset() { eStop = false; }
+inline void RRLServo::SetIntegralWeight(float w)
+{
+  integralWeight = w;
+  ResetPID();
+}
 
-inline float RRLServo::Angle() { return angle; }
+inline void RRLServo::SetDerivativeWeight(float w)
+{
+  derivativeWeight = w;
+  ResetPID();
+}
+
+inline void RRLServo::SetDeadZone(float dz)
+{
+  deadZone = dz;
+  ResetPID();
+}
+
+inline void RRLServo::SetMaximumPWM(int maxP)
+{
+  maxPWM = maxP;
+  ResetPID();
+}
+
+inline void RRLServo::Reset()
+{
+  eStop = false;
+  ResetPID();
+}
+
+inline float RRLServo::Angle()
+{
+  return angle;
+}
 
 #endif
