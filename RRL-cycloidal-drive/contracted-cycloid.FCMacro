@@ -1,0 +1,57 @@
+# See https://www.tec-science.com/mechanical-power-transmission/planetary-gear/construction-of-the-cycloidal-disc/
+
+
+import math as maths
+import Part
+
+'''
+reference circle diameter of the fixed ring pins D
+base circle d
+pin diameter dp
+number of fixed pins N
+transmission ratio i
+diameter of the roller pins dr
+reference circle diameter dd of the roller pins on the roller disc
+eccentricity of the cycloidal disc e
+
+
+D = 40.0
+d = 35
+dp = 5.0
+N = 20
+dr = 5.0
+dd = 25.0
+eRatio = 0.9
+
+delta = D/N
+i = d*N/D
+print("transmission ratio: " + str(i))
+d = i*D/N
+e = eRatio*delta*0.5
+dh = dr + 2*e
+print("hole diameter: " + str(dh))
+
+
+R = d/2
+r1 = delta/2
+r2 = 0.9*r1
+'''
+R = 20
+r1 = 1
+r2 = 0.9*r1
+r3 = 1.5
+
+pts = []
+for theta in range(361):
+ x = (R + r1)*maths.cos(theta*maths.pi/180.0)
+ y = (R + r1)*maths.sin(theta*maths.pi/180.0)
+ phi = R*theta/r1
+ x += r2*maths.cos((theta+phi)*maths.pi/180.0)
+ y += r2*maths.sin((theta+phi)*maths.pi/180.0)
+ #r = maths.sqrt(x*x + y*y)
+ #x = x*(r - r3)/r
+ #y = y*(r - r3)/r
+ pts.append(App.Vector(x, y, 0))
+wire=Part.makePolygon(pts)
+face=Part.Face(wire)
+Part.show(face)
