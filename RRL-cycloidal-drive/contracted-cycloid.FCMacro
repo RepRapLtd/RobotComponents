@@ -3,6 +3,7 @@
 
 import math as maths
 import Part
+from FreeCAD import Base
 
 '''
 reference circle diameter of the fixed ring pins D
@@ -13,45 +14,69 @@ transmission ratio i
 diameter of the roller pins dr
 reference circle diameter dd of the roller pins on the roller disc
 eccentricity of the cycloidal disc e
-
+'''
 
 D = 40.0
-d = 35
+d = 20
 dp = 5.0
 N = 20
 dr = 5.0
 dd = 25.0
-eRatio = 0.9
+eRatio = 0.8
 
 delta = D/N
+print("delta: " + str(delta))
 i = d*N/D
 print("transmission ratio: " + str(i))
 d = i*D/N
+print("d: " + str(d))
 e = eRatio*delta*0.5
+print("e: " + str(e))
 dh = dr + 2*e
 print("hole diameter: " + str(dh))
 
 
 R = d/2
+print("R: " + str(R))
 r1 = delta/2
-r2 = 0.9*r1
-'''
-R = 20
-r1 = 1
-r2 = 0.9*r1
-r3 = 1.5
+print("r1: " + str(r1))
+r2 = 0.5*r1
+print("r2: " + str(r2))
 
-pts = []
-for theta in range(361):
- x = (R + r1)*maths.cos(theta*maths.pi/180.0)
- y = (R + r1)*maths.sin(theta*maths.pi/180.0)
+
+
+def Gradient(xOld, xNew, yOld, yNew, r):
+ dy = xNew - xOld
+ dx = yOld - yNew
+ s = r/maths.sqrt(dx*dx + dy*dy)
+ return (dx*s, dy*s)
+
+cycloid = []
+offsetCycloid = []
+x = R + r1
+y = 0
+for theta in range(363):
+ xNew = (R + r1)*maths.cos(theta*maths.pi/180.0)
+ yNew = (R + r1)*maths.sin(theta*maths.pi/180.0)
  phi = R*theta/r1
- x += r2*maths.cos((theta+phi)*maths.pi/180.0)
- y += r2*maths.sin((theta+phi)*maths.pi/180.0)
+ xNew += r2*maths.cos((theta+phi)*maths.pi/180.0)
+ yNew += r2*maths.sin((theta+phi)*maths.pi/180.0)
  #r = maths.sqrt(x*x + y*y)
  #x = x*(r - r3)/r
  #y = y*(r - r3)/r
- pts.append(App.Vector(x, y, 0))
-wire=Part.makePolygon(pts)
+ 
+ if theta >= 2:
+  dxy = Gradient(xOld, xNew, yOld, yNew, dp/2)
+  offsetCycloid.append(App.Vector(x + dxy[0], y + dxy[1], 0))
+  cycloid.append(App.Vector(x, y, 0))
+ xOld = x
+ yOld = y
+ x = xNew
+ y = yNew
+ 
+wire=Part.makePolygon(offsetCycloid)
 face=Part.Face(wire)
+face.translate(Base.Vector(0, e, 0))
 Part.show(face)
+wire=Part.makePolygon(cycloid)
+Part.show(wire)
