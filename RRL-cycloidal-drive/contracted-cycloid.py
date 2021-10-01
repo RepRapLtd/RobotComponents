@@ -33,11 +33,11 @@ n = 20    # Number of lobes
 N = 21  # Number of pins
 dr = 5  # inner roller pin diameter
 dd = 24  # inner roller pin centres diameter
-rollerHoles = 10 # Number of roller holes (must equal n or divide into n exactly)
+rollerHoles = 5 # Number of roller holes (must equal n or divide into n exactly)
 e = 2    # eccentricity
 dc = 10 # Diameter of central hole
 thickness = 5 # How thick to make the contracted cycloidal disc
-circle = 360 # Sets the facetting to correspond to 1 degree. Bigger for finer facetting. (even)
+circle = 360 # Sets the facetting to correspond to 1 degree; a 360 faced polygon. Bigger for finer facetting. (use even numbers)
 
 #*******************************************************************************************************
 
