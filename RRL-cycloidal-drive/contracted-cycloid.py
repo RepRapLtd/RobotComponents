@@ -14,7 +14,7 @@
 # Note - it makes exact geometry*; it doesn't offset shapes to allow clearances, so you probably want to
 # do things like saying the pins and rollers are 0.1mm bigger than they actually are - experiment.
 #
-# *Well, exact: the cycloidal disc it creates is a many faceted approximation to the true algebra.
+# *Well, exact: the cycloidal disc it creates is a many-faceted approximation to the true algebra.
 # The faceting can be made as fine as you like though.
 # 
 
@@ -35,9 +35,10 @@ N = 21  # Number of pins
 dr = 5  # inner roller pin diameter
 dd = 24  # inner roller pin centres diameter
 rollerHoles = 10 # Number of roller holes (must equal n or divide into n exactly)
+eFactor = 0.25 # Sets the eccentricity. Must be less than 0.5. If it's too big the faceting will be inaccurate, so increase circle below.
 dc = 10 # Diameter of central hole
 thickness = 5 # How thick to make the contracted cycloidal disc
-circle = 360 # Sets the facetting to correspond to 1 degree; a 360-faced polygon. Bigger for finer faceting (use even numbers).
+circle = 360 # Sets the faceting to correspond to 1 degree; a 360-faced polygon. Bigger for finer faceting (use even numbers).
 
 #***************************************************************************************************************************
 
@@ -49,7 +50,7 @@ delta = D/N
 print("Rolling circle diameter: " + str(delta))
 d = i*D/N
 print("Base circle diamater: " + str(d))
-e = delta*0.25
+e = delta*eFactor
 print("Eccentricity: " + str(e))
 dh = dr + 2*e
 print("Hole diameter: " + str(dh) + ". There are " + str(rollerHoles) + " on pitch diameter " + str(dd) + ".")
