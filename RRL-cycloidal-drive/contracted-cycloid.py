@@ -11,7 +11,7 @@
 #
 # This builds all the basic geometry needed for a cycloidal drive.
 #
-# Note - it makes exact geometry*; it doesn't not offset shapes to allow clearances, so you probably want to
+# Note - it makes exact geometry*; it doesn't offset shapes to allow clearances, so you probably want to
 # do things like saying the pins and rollers are 0.1mm bigger than they actually are - experiment.
 #
 # *Well, exact: the cycloidal disc it creates as a many faceted approximation to the true algebra.
@@ -26,6 +26,7 @@ from FreeCAD import Base
 
 # Put numbers in here
 # See https://www.tec-science.com/mechanical-power-transmission/planetary-gear/construction-of-the-cycloidal-disc/
+# All dimensions in mm
 
 D = 40  # Pin circle centres diameter
 dp = 5  # Pin diameter
@@ -33,8 +34,7 @@ n = 20    # Number of lobes
 N = 21  # Number of pins
 dr = 5  # inner roller pin diameter
 dd = 24  # inner roller pin centres diameter
-rollerHoles = 5 # Number of roller holes (must equal n or divide into n exactly)
-e = 2    # eccentricity
+rollerHoles = 10 # Number of roller holes (must equal n or divide into n exactly)
 dc = 10 # Diameter of central hole
 thickness = 5 # How thick to make the contracted cycloidal disc
 circle = 360 # Sets the facetting to correspond to 1 degree; a 360 faced polygon. Bigger for finer facetting. (use even numbers)
@@ -60,14 +60,17 @@ def NullSet():
  a.translate(Base.Vector(10, 10, 10))
  return a.common(Part.makeBox(1, 1, 1))
 
-# Compute a normal vector using a chord across a curve
+# Compute a normal vector length r using a chord across a curve (i.e. 2nd degree approximation).
 def NormalVector(xOld, xNew, yOld, yNew, r):
  dy = xNew - xOld
  dx = yOld - yNew
  s = r/maths.sqrt(dx*dx + dy*dy)
  return (dx*s, dy*s)
 
-# This builds the blank contracted cycloid
+# This builds the blank contracted cycloid.
+# Note we use the first three of times round the loop
+# to get the numbers for the curve-normal calculation,
+# so we have to go +3 at the end to join up.
 def ContractedCycloidBlank():
  offsetCycloid = []
  x = d/2 + delta/2
@@ -90,7 +93,7 @@ def ContractedCycloidBlank():
  face=Part.Face(wire)
  return face.extrude(Base.Vector(0, 0, thickness))
 
-# This builds the contracted cycloid with the central holes it needs
+# This builds the contracted cycloid with the central holes it needs.
 def ContractedCycloid():
  cc = ContractedCycloidBlank()
  ainc = 360/rollerHoles
