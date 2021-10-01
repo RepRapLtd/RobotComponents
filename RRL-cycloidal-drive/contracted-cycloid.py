@@ -28,17 +28,17 @@ from FreeCAD import Base
 # See https://www.tec-science.com/mechanical-power-transmission/planetary-gear/construction-of-the-cycloidal-disc/
 # All dimensions are in mm.
 
-D = 40  # Pin circle centres diameter
-dp = 5  # Pin diameter
-n = 20    # Number of lobes
-N = 21  # Number of pins
-dr = 5  # inner roller pin diameter
-dd = 24  # inner roller pin centres diameter
-rollerHoles = 10 # Number of roller holes (must equal n or divide into n exactly)
-eFactor = 0.25 # Sets the eccentricity. Must be less than 0.5. If it's too big the faceting will be inaccurate, so increase circle below.
-dc = 10 # Diameter of central hole
+D = 50  # Pin circle centres diameter
+dp = 5.2  # Pin diameter
+n = 8    # Number of lobes
+N = 9  # Number of pins
+dr = 5.2  # inner roller pin diameter
+dd = 34 # inner roller pin centres diameter
+rollerHoles = 4 # Number of roller holes (must equal n or divide into n exactly)
+eFactor = 0.3 # Sets the eccentricity. Must be less than 0.5. If it's too big the faceting will be inaccurate, so increase circle below.
+dc = 24.1 # Diameter of central hole
 thickness = 5 # How thick to make the contracted cycloidal disc
-circle = 360 # Sets the faceting to correspond to 1 degree; a 360-faced polygon. Bigger for finer faceting (use even numbers).
+circle = 1000 # Sets the faceting to correspond to 1 degree; a 360-faced polygon. Bigger for finer faceting (use even numbers).
 
 #***************************************************************************************************************************
 
