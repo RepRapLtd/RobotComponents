@@ -14,7 +14,7 @@
 # Note - it makes exact geometry*; it doesn't offset shapes to allow clearances, so you probably want to
 # do things like saying the pins and rollers are 0.1mm bigger than they actually are - experiment.
 #
-# *Well, exact: the cycloidal disc it creates as a many faceted approximation to the true algebra.
+# *Well, exact: the cycloidal disc it creates is a many faceted approximation to the true algebra.
 # The faceting can be made as fine as you like though.
 # 
 
@@ -22,11 +22,11 @@ import math as maths
 import Part
 from FreeCAD import Base
 
-#*******************************************************************************************************
+#*****************************************************************************************************************************
 
-# Put numbers in here
+# Put numbers in here.
 # See https://www.tec-science.com/mechanical-power-transmission/planetary-gear/construction-of-the-cycloidal-disc/
-# All dimensions in mm
+# All dimensions are in mm.
 
 D = 40  # Pin circle centres diameter
 dp = 5  # Pin diameter
@@ -37,22 +37,22 @@ dd = 24  # inner roller pin centres diameter
 rollerHoles = 10 # Number of roller holes (must equal n or divide into n exactly)
 dc = 10 # Diameter of central hole
 thickness = 5 # How thick to make the contracted cycloidal disc
-circle = 360 # Sets the facetting to correspond to 1 degree; a 360 faced polygon. Bigger for finer facetting. (use even numbers)
+circle = 360 # Sets the facetting to correspond to 1 degree; a 360-faced polygon. Bigger for finer faceting (use even numbers).
 
-#*******************************************************************************************************
+#***************************************************************************************************************************
 
 # Work out some parameters and tell the user
 
 i = n/(N-n)
-print("transmission ratio: " + str(i))
+print("Transmission ratio: " + str(i))
 delta = D/N
-print("rolling circle diameter: " + str(delta))
+print("Rolling circle diameter: " + str(delta))
 d = i*D/N
-print("base circle diamater: " + str(d))
+print("Base circle diamater: " + str(d))
 e = delta*0.25
-print("eccentricity: " + str(e))
+print("Eccentricity: " + str(e))
 dh = dr + 2*e
-print("hole diameter: " + str(dh) + ". There are " + str(n) + " on pitch diameter " + str(dd))
+print("Hole diameter: " + str(dh) + ". There are " + str(rollerHoles) + " on pitch diameter " + str(dd) + ".")
 
 # This is nasty...
 def NullSet():
