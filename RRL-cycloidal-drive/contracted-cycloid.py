@@ -37,7 +37,8 @@ dd = 34 # inner roller pin centres diameter
 rollerHoles = 4 # Number of roller holes (must equal n or divide into n exactly)
 eFactor = 0.3 # Sets the eccentricity. Must be less than 0.5. If it's too big the faceting will be inaccurate, so increase circle below.
 dc = 24.1 # Diameter of central hole
-thickness = 5 # How thick to make the contracted cycloidal disc
+bearingLength = 3 # How thick to make the contracted cycloidal disc
+lip = -1 # Create a lip to constrain axial drift. Set to -1 to supress.
 circle = 1000 # Sets the faceting to correspond to 1 degree; a 360-faced polygon. Bigger for finer faceting (use even numbers).
 
 #***************************************************************************************************************************
@@ -74,6 +75,8 @@ def NormalVector(xOld, xNew, yOld, yNew, r):
 # so we have to go +3 at the end to join up.
 def ContractedCycloidBlank():
  offsetCycloid = []
+ if lip > 0:
+  lipWire = []
  x = d/2 + delta/2
  y = 0
  circlePi = circle*0.5
@@ -86,42 +89,54 @@ def ContractedCycloidBlank():
   if theta >= 2:
    dxy = NormalVector(xOld, xNew, yOld, yNew, dp/2)
    offsetCycloid.append(App.Vector(x + dxy[0], y + dxy[1], 0))
+   if lip > 0:
+    dxy = NormalVector(xOld, xNew, yOld, yNew, dp/2 - lip)
+    lipWire.append(App.Vector(x + dxy[0], y + dxy[1], 0))
   xOld = x
   yOld = y
   x = xNew
   y = yNew
  wire=Part.makePolygon(offsetCycloid)
  face=Part.Face(wire)
- return face.extrude(Base.Vector(0, 0, thickness))
+ result = face.extrude(Base.Vector(0, 0, bearingLength))
+ if lip > 0:
+  lipWire=Part.makePolygon(lipWire)
+  lipFace=Part.Face(lipWire)
+  lipSolid = lipFace.extrude(Base.Vector(0, 0, lip))
+  lipSolid2 = lipSolid.copy()
+  lipSolid.translate(Base.Vector(0, 0, -lip))
+  lipSolid2.translate(Base.Vector(0, 0, bearingLength))
+  result = result.fuse(lipSolid).fuse(lipSolid2)
+ return result
 
 # This builds the contracted cycloid with the central holes it needs.
 def ContractedCycloid():
  cc = ContractedCycloidBlank()
  ainc = 360/rollerHoles
  for r in range(rollerHoles):
-  roller = Part.makeCylinder(dh/2, thickness+2, Base.Vector(dd/2, 0, -1), Base.Vector(0, 0, 1))
+  roller = Part.makeCylinder(dh/2, bearingLength+2, Base.Vector(dd/2, 0, -1), Base.Vector(0, 0, 1))
   roller.rotate(Base.Vector(0, 0, 0),Base.Vector(0, 0, 1), r*ainc)
   cc = cc.cut(roller)
- centre = Part.makeCylinder(dc/2, thickness+2, Base.Vector(0, 0, -1), Base.Vector(0, 0, 1))
+ centre = Part.makeCylinder(dc/2, bearingLength+2, Base.Vector(0, 0, -1), Base.Vector(0, 0, 1))
  cc = cc.cut(centre)
  cc.translate(Base.Vector(-e, 0, 0))
  return cc
 
 # This adds the pins, rollers, and central axis to the model if required
 def ShowAncilliaryParts():
- axis = Part.makeCylinder(2, thickness+2, Base.Vector(0, 0, -1), Base.Vector(0, 0, 1))
+ axis = Part.makeCylinder(2, bearingLength+2, Base.Vector(0, 0, -1), Base.Vector(0, 0, 1))
  Part.show(axis)
  rollers = NullSet()
  ainc = 360/rollerHoles
  for r in range(rollerHoles):
-  roller = Part.makeCylinder(dr/2, thickness+2, Base.Vector(dd/2, 0, -1), Base.Vector(0, 0, 1))
+  roller = Part.makeCylinder(dr/2, bearingLength, Base.Vector(dd/2, 0, 0), Base.Vector(0, 0, 1))
   roller.rotate(Base.Vector(0, 0, 0),Base.Vector(0, 0, 1), r*ainc)
   rollers = rollers.fuse(roller)
  Part.show(rollers)
  pins = NullSet()
  ainc = 360/N
  for r in range(N):
-  pin = Part.makeCylinder(dp/2, thickness+2, Base.Vector(D/2, 0, -1), Base.Vector(0, 0, 1))
+  pin = Part.makeCylinder(dp/2, bearingLength, Base.Vector(D/2, 0, 0), Base.Vector(0, 0, 1))
   pin.rotate(Base.Vector(0, 0, 0),Base.Vector(0, 0, 1), r*ainc)
   pins = pins.fuse(pin)
  Part.show(pins)
