@@ -38,8 +38,8 @@ rollerHoles = 4 # Number of roller holes (must equal n or divide into n exactly)
 eFactor = 0.3 # Sets the eccentricity. Must be less than 0.5. If it's too big the faceting will be inaccurate, so increase circle below.
 dc = 24.1 # Diameter of central hole
 bearingLength = 3 # How thick to make the contracted cycloidal disc
-lip = -1 # Create a lip to constrain axial drift. Set to -1 to supress.
-circle = 1000 # Sets the faceting to correspond to 1 degree; a 360-faced polygon. Bigger for finer faceting (use even numbers).
+lip = 0.5 # Create a lip to constrain axial drift. Set to -1 to supress.
+circle = 360 # Sets the faceting to correspond to 1 degree; a 360-faced polygon. Bigger for finer faceting (use even numbers).
 
 #***************************************************************************************************************************
 
@@ -96,25 +96,39 @@ def ContractedCycloidBlank():
   yOld = y
   x = xNew
   y = yNew
- wire=Part.makePolygon(offsetCycloid)
- face=Part.Face(wire)
+ offsetCycloidWire=Part.makePolygon(offsetCycloid)
+ face=Part.Face(offsetCycloidWire)
  result = face.extrude(Base.Vector(0, 0, bearingLength))
  if lip > 0:
   lipWire=Part.makePolygon(lipWire)
-  lipFace=Part.Face(lipWire)
-  lipSolid = lipFace.extrude(Base.Vector(0, 0, lip))
-  lipSolid2 = lipSolid.copy()
-  lipSolid.translate(Base.Vector(0, 0, -lip))
-  lipSolid2.translate(Base.Vector(0, 0, bearingLength))
-  result = result.fuse(lipSolid).fuse(lipSolid2)
+  lipWire.translate(Base.Vector(0, 0, -lip))
+  lipFace1 = Part.Face(lipWire)
+  lipExtrude1 = lipFace1.extrude(Base.Vector(0, 0, -lip))
+  lipExtrude2 = lipExtrude1.copy().translate(Base.Vector(0, 0, bearingLength+3*lip))
+  loft = [lipWire, offsetCycloidWire]
+  loft = Part.makeLoft(loft, True, False)
+  lipWire.translate(Base.Vector(0, 0, bearingLength+2*lip))
+  offsetCycloidWire.translate(Base.Vector(0, 0, bearingLength))
+  loft2 = [lipWire, offsetCycloidWire]
+  loft2 = Part.makeLoft(loft2, True, False)
+  result = result.fuse(loft).fuse(loft2).fuse(lipExtrude1).fuse(lipExtrude2)
  return result
+
+def RollerHole():
+ roller = Part.makeCylinder(dh/2, bearingLength, Base.Vector(0, 0, 0), Base.Vector(0, 0, 1))
+ if lip > 0:
+  roller = roller.fuse(Part.makeCone(dh/2, dh/2-lip, lip, Base.Vector(0, 0, bearingLength), Base.Vector(0, 0, 1)))
+  roller = roller.fuse(Part.makeCone(dh/2, dh/2-lip, lip, Base.Vector(0, 0, 0), Base.Vector(0, 0, -1)))
+  roller = roller.fuse(Part.makeCylinder(dh/2-lip, lip, Base.Vector(0, 0, bearingLength+lip), Base.Vector(0, 0, 1)))
+  roller = roller.fuse(Part.makeCylinder(dh/2-lip, lip, Base.Vector(0, 0, -lip), Base.Vector(0, 0, -1)))
+ return roller
 
 # This builds the contracted cycloid with the central holes it needs.
 def ContractedCycloid():
  cc = ContractedCycloidBlank()
  ainc = 360/rollerHoles
  for r in range(rollerHoles):
-  roller = Part.makeCylinder(dh/2, bearingLength+2, Base.Vector(dd/2, 0, -1), Base.Vector(0, 0, 1))
+  roller = RollerHole().translate(Base.Vector(dd/2, 0, 0))
   roller.rotate(Base.Vector(0, 0, 0),Base.Vector(0, 0, 1), r*ainc)
   cc = cc.cut(roller)
  centre = Part.makeCylinder(dc/2, bearingLength+2, Base.Vector(0, 0, -1), Base.Vector(0, 0, 1))
