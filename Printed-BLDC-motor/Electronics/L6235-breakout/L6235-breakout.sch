@@ -70,39 +70,6 @@ F 3 "~" H 2250 1825 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Diode:1N4148 D3
-U 1 1 615B9ABB
-P 6075 5050
-F 0 "D3" H 6075 5267 50  0000 C CNN
-F 1 "1N4148" H 6075 5176 50  0000 C CNN
-F 2 "Diode_SMD:D_0805_2012Metric" H 6075 4875 50  0001 C CNN
-F 3 "https://assets.nexperia.com/documents/data-sheet/1N4148_1N4448.pdf" H 6075 5050 50  0001 C CNN
-	1    6075 5050
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R7
-U 1 1 615BA7AD
-P 6325 5800
-F 0 "R7" H 6395 5846 50  0000 L CNN
-F 1 "R" H 6395 5755 50  0000 L CNN
-F 2 "Resistor_SMD:R_0805_2012Metric" V 6255 5800 50  0001 C CNN
-F 3 "~" H 6325 5800 50  0001 C CNN
-	1    6325 5800
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:C C9
-U 1 1 615BAFC7
-P 6575 5800
-F 0 "C9" H 6690 5846 50  0000 L CNN
-F 1 "C" H 6690 5755 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 6613 5650 50  0001 C CNN
-F 3 "~" H 6575 5800 50  0001 C CNN
-	1    6575 5800
-	1    0    0    -1  
-$EndComp
-$Comp
 L reprapltd-kicad:L6235PD U1
 U 1 1 615B25EC
 P 6650 2125
@@ -268,27 +235,11 @@ F 3 "~" H 3900 3725 50  0001 C CNN
 	1    3900 3725
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	3125 3875 3550 3875
 Connection ~ 3125 3875
 Connection ~ 2900 3125
-$Comp
-L adafruit-new:CPOL-USC C3
-U 1 1 615DAAB8
-P 3550 3675
-F 0 "C3" H 3575 3725 45  0000 L CNN
-F 1 "100u" H 3575 3550 45  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm" H 3580 3825 20  0001 C CNN
-F 3 "" H 3550 3675 50  0001 C CNN
-	1    3550 3675
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	3125 3575 3550 3575
 Connection ~ 3125 3575
-Wire Wire Line
-	3550 3875 3900 3875
-Connection ~ 3550 3875
 Wire Wire Line
 	3900 3575 3900 3125
 Wire Wire Line
@@ -389,8 +340,8 @@ $Comp
 L Device:R R5
 U 1 1 61613E1F
 P 5275 2925
-F 0 "R5" H 5205 2879 50  0000 R CNN
-F 1 "0.33R" H 5205 2970 50  0000 R CNN
+F 0 "R5" H 5325 3175 50  0000 R CNN
+F 1 "1R" H 5325 3250 50  0000 R CNN
 F 2 "Resistor_SMD:R_0805_2012Metric" V 5205 2925 50  0001 C CNN
 F 3 "~" H 5275 2925 50  0001 C CNN
 	1    5275 2925
@@ -588,7 +539,7 @@ Connection ~ 8150 2775
 Wire Wire Line
 	8150 2775 8025 2775
 Wire Wire Line
-	5275 3075 6150 3075
+	5275 3075 5375 3075
 Wire Wire Line
 	5275 2375 5275 2775
 Wire Wire Line
@@ -797,4 +748,53 @@ Wire Wire Line
 Connection ~ 5000 1550
 Wire Wire Line
 	5300 1575 6150 1575
+$Comp
+L Device:CP C3
+U 1 1 615C8FC6
+P 3550 3725
+F 0 "C3" H 3668 3771 50  0000 L CNN
+F 1 "100u" H 3668 3680 50  0000 L CNN
+F 2 "Capacitor_THT:C_Radial_D8.0mm_H7.0mm_P3.50mm" H 3588 3575 50  0001 C CNN
+F 3 "~" H 3550 3725 50  0001 C CNN
+	1    3550 3725
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3125 3875 3550 3875
+Connection ~ 3550 3875
+Wire Wire Line
+	3550 3875 3900 3875
+$Comp
+L Device:R R7
+U 1 1 615C6A29
+P 5150 2925
+F 0 "R7" H 5300 2900 50  0000 R CNN
+F 1 "1R" H 5300 2975 50  0000 R CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 5080 2925 50  0001 C CNN
+F 3 "~" H 5150 2925 50  0001 C CNN
+	1    5150 2925
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:R R13
+U 1 1 615C6F4F
+P 5375 2925
+F 0 "R13" H 5305 2879 50  0000 R CNN
+F 1 "1R" H 5305 2970 50  0000 R CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 5305 2925 50  0001 C CNN
+F 3 "~" H 5375 2925 50  0001 C CNN
+	1    5375 2925
+	-1   0    0    1   
+$EndComp
+Connection ~ 5375 3075
+Wire Wire Line
+	5375 3075 6150 3075
+Wire Wire Line
+	5275 3075 5150 3075
+Connection ~ 5275 3075
+Wire Wire Line
+	5150 2775 5275 2775
+Connection ~ 5275 2775
+Wire Wire Line
+	5375 2775 5275 2775
 $EndSCHEMATC
