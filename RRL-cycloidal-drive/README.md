@@ -2,8 +2,9 @@ We have been experimenting with [3D printed Ravigneaux epicyclic gears](https://
 
 Here, in contrast, is the 3D printed cycloidal gearbox from [James Bruton's Open Dog robot Version 3](https://www.youtube.com/watch?v=yXA_KeuYpCY). 
 
-[![](https://reprapltd.com/wp-content/uploads/2021/10/open-dog-v3-gearbox.png)](https://reprapltd.com/wp-content/uploads/2021/10/open-dog-v3-gearbox.png) 
+[![](https://github.com/RepRapLtd/RobotComponents/blob/main/RRL-cycloidal-drive/Pix/open-dog-v3-gearbox.png)]
   
+
 Cycloidal gearboxes are great because they are low friction, compact, and give high reduction ratios. They are also easy to print, and - given that ball bearing races are low cost - inexpensive to make. Fitted to the output of a [brushless DC (BLDC) electric motor](https://reprapltd.com/3d-printed-electric-motor-some-assembly-required/) they are ideal for robot drives. 
 
 Here is a picture of their structure, taken from the useful [TEC Science page on them here](https://www.tec-science.com/mechanical-power-transmission/planetary-gear/construction-of-the-cycloidal-disc/).
