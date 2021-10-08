@@ -1,3 +1,6 @@
+Cycloidal Gearbox
+=================
+
 We have been experimenting with [3D printed Ravigneaux epicyclic gears](https://reprapltd.com/printing-ravigneaux-epicyclic-gearboxes/) to get a high-reduction-ratio gearbox in a compact space. They work if you drive them with a high-torque from an already geared-down motor, but they suffer from high friction, which makes them unsuitable for being driven by small motors directly. 
 
 Here, in contrast, is the 3D printed cycloidal gearbox from [James Bruton's Open Dog robot Version 3](https://www.youtube.com/watch?v=yXA_KeuYpCY). 
