@@ -9,7 +9,7 @@ Cycloidal gearboxes are great because they are low friction, compact, and give h
 
 Here is a picture of their structure, taken from the useful [TEC Science page on them here](https://www.tec-science.com/mechanical-power-transmission/planetary-gear/construction-of-the-cycloidal-disc/).
 
-![cycliodal diagram](https://github.com/RepRapLtd/RobotComponents/blob/main/RRL-cycloidal-drive/Pix/en-cycloidal-drive-speed-reducer-operating-principle-assembly-1024x576.jpg) 
+![cycliodal diagram](https://github.com/RepRapLtd/RobotComponents/blob/main/RRL-cycloidal-drive/Pix/how-it-works.jpg) 
  
 The green shaft in the middle is driven, causing the eccentrically mounted blue cycloidal disc to roll round the stationary outer fixed ring pins. As it does so circular holes in it push against the pins of the red pin disc, causing the red disc to rotate. This is the output, which is coaxial with the input.  Sometimes the pins in these drives are actual pins. But if instead ball bearing races are used for them you get very low friction and high efficiency. 
  
