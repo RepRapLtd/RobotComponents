@@ -29,17 +29,17 @@ from FreeCAD import Base
 # All dimensions are in mm.
 
 D = 50  # Pin circle centres diameter
-dp = 5.2  # Pin diameter
+dp = 5.3  # Pin diameter
 n = 8    # Number of lobes
 N = 9  # Number of pins
-dr = 5.2  # inner roller pin diameter
+dr = 5.3  # inner roller pin diameter
 dd = 34 # inner roller pin centres diameter
 rollerHoles = 4 # Number of roller holes (must equal n or divide into n exactly)
 eFactor = 0.3 # Sets the eccentricity. Must be less than 0.5. If it's too big the faceting will be inaccurate, so increase circle below.
 dc = 24.1 # Diameter of central hole
 bearingLength = 3 # How thick to make the contracted cycloidal disc
-lip = 0.5 # Create a lip to constrain axial drift. Set to -1 to supress.
-circle = 360 # Sets the faceting to correspond to 1 degree; a 360-faced polygon. Bigger for finer faceting (use even numbers).
+lip = 0.25 # Create a lip to constrain axial drift. Set to -1 to supress.
+circle = 800 # Sets the faceting to correspond to 1 degree; a 360-faced polygon. Bigger for finer faceting (use even numbers).
 
 #***************************************************************************************************************************
 

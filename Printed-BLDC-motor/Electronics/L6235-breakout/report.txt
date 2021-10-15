@@ -1,0 +1,3 @@
+Plot file "/home/sally/ownCloud/RepRapLtd/Engineering/Internal-Projects/Robots/RobotComponents/Printed-BLDC-motor/Electronics/L6235-breakout/GERBERS/L6235-breakout-F_Cu.gbr" created.
+Plot file "/home/sally/ownCloud/RepRapLtd/Engineering/Internal-Projects/Robots/RobotComponents/Printed-BLDC-motor/Electronics/L6235-breakout/GERBERS/L6235-breakout-Edge_Cuts.gbr" created.
+Create Gerber job file "/home/sally/ownCloud/RepRapLtd/Engineering/Internal-Projects/Robots/RobotComponents/Printed-BLDC-motor/Electronics/L6235-breakout/GERBERS/L6235-breakout-job.gbrjob"

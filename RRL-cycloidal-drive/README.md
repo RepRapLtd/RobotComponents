@@ -22,7 +22,7 @@ We have written an open-source Python program in FreeCAD to generate the compone
   
 The grey outer cylinders are 5mm diameter ball bearings [like these](https://www.amazon.co.uk/gp/product/B082PW27VY) that mount on 2mm shafts (which is to say they could be retained by M2 screws), as are the red inner bearings. The overall gearbox is 45mm in diameter. The green cylinder shows the axis of the drive. As you can see the blue cycloid disc is eccentric to that. The reduction ratio is 20:1. By changing the parameters you can generate pretty much any size of cycloidal gearbox you want with any reduction ratio. You can also stack them to multiply reduction ratios. 
   
-We have also added an option to create a lip above and below the cylindrical and cycloidal surfaces where the bearings run. This helps to locake all the components in the axial direction. Here is the result for a lower reduction ratio gear (8:1) with fewer bearings so you can see what is going on:
+We have also added an option to create a lip above and below the cylindrical and cycloidal surfaces where the bearings run. This helps to locate all the components in the axial direction. Here is the result for a lower reduction ratio gear (8:1) with fewer bearings so you can see what is going on:
   
 ![drive with lip](https://github.com/RepRapLtd/RobotComponents/blob/main/RRL-cycloidal-drive/Pix/cycloidal-drive-lip.png)  
    
