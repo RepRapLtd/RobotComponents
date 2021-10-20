@@ -1,0 +1,27 @@
+EESchema-LIBRARY Version 2.4
+#encoding utf-8
+#
+# 7805DT-adafruit-new
+#
+DEF 7805DT-adafruit-new IC 0 40 Y Y 1 L N
+F0 "IC" -300 225 45 H V L BNN
+F1 "7805DT-adafruit-new" -300 125 45 H V L BNN
+F2 "adafruit-new_TO252" 30 150 20 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ *TO252*
+ *TO39*
+$ENDFPLIST
+DRAW
+T 0 -11 -146 48 0 1 0 GND Normal 0 C C
+P 2 1 0 0 -300 -200 300 -200 N
+P 2 1 0 0 -300 100 -300 -200 N
+P 2 1 0 0 300 -200 300 100 N
+P 2 1 0 0 300 100 -300 100 N
+X VI 1 -400 0 100 R 40 40 1 1 I
+X VO 2 400 0 100 L 40 40 1 1 P
+X GND 3 0 -300 100 U 40 40 1 1 P
+ENDDRAW
+ENDDEF
+#
+#End Library

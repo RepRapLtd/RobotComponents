@@ -26,17 +26,6 @@ Wire Wire Line
 Wire Wire Line
 	7150 1175 7150 1275
 $Comp
-L Connector:Conn_01x02_Male J4
-U 1 1 615B391B
-P 2275 3125
-F 0 "J4" H 2383 3306 50  0000 C CNN
-F 1 "5V" H 2383 3215 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 2275 3125 50  0001 C CNN
-F 3 "~" H 2275 3125 50  0001 C CNN
-	1    2275 3125
-	1    0    0    -1  
-$EndComp
-$Comp
 L Connector:Conn_01x02_Male J5
 U 1 1 615B3FB9
 P 2275 3700
@@ -67,17 +56,6 @@ F 1 "HALL" H 2358 2115 50  0000 C CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical" H 2250 1825 50  0001 C CNN
 F 3 "~" H 2250 1825 50  0001 C CNN
 	1    2250 1825
-	1    0    0    -1  
-$EndComp
-$Comp
-L reprapltd-kicad:L6235PD U1
-U 1 1 615B25EC
-P 6650 2125
-F 0 "U1" H 6650 3200 50  0000 C CNN
-F 1 "L6235PD" H 6650 3109 50  0000 C CNN
-F 2 "reprapltd-kicad:SOIC-36_11mmx16mmx3.6mm" H 6650 2125 50  0001 C CNN
-F 3 "" H 6650 2125 50  0001 C CNN
-	1    6650 2125
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -118,31 +96,7 @@ Wire Wire Line
 Wire Wire Line
 	2925 3700 2925 3575
 Wire Wire Line
-	2475 3800 2600 3800
-Wire Wire Line
 	2925 3800 2925 3875
-Wire Wire Line
-	2475 3225 2600 3225
-Wire Wire Line
-	2600 3225 2600 3800
-Connection ~ 2600 3800
-Wire Wire Line
-	2600 3800 2925 3800
-$Comp
-L power:+5V #PWR0104
-U 1 1 615C94C4
-P 2900 3050
-F 0 "#PWR0104" H 2900 2900 50  0001 C CNN
-F 1 "+5V" H 2915 3223 50  0000 C CNN
-F 2 "" H 2900 3050 50  0001 C CNN
-F 3 "" H 2900 3050 50  0001 C CNN
-	1    2900 3050
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2475 3125 2900 3125
-Wire Wire Line
-	2900 3125 2900 3050
 Text GLabel 2600 2625 2    50   Input ~ 0
 PHASE3
 Text GLabel 2600 2525 2    50   Input ~ 0
@@ -199,10 +153,7 @@ Wire Wire Line
 	6225 3175 6225 3075
 Connection ~ 6225 3075
 Wire Wire Line
-	6225 3075 7150 3075
-Wire Wire Line
-	7150 1575 6150 1575
-Connection ~ 6150 1575
+	6225 3075 6800 3075
 $Comp
 L Device:C C2
 U 1 1 615D745E
@@ -224,26 +175,10 @@ Wire Wire Line
 Connection ~ 2925 3875
 Wire Wire Line
 	2925 3875 2925 3900
-$Comp
-L Device:C C4
-U 1 1 615D8F7B
-P 3900 3725
-F 0 "C4" H 4015 3771 50  0000 L CNN
-F 1 "0.1u" H 4015 3680 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 3938 3575 50  0001 C CNN
-F 3 "~" H 3900 3725 50  0001 C CNN
-	1    3900 3725
-	1    0    0    -1  
-$EndComp
 Connection ~ 3125 3875
-Connection ~ 2900 3125
 Wire Wire Line
 	3125 3575 3550 3575
 Connection ~ 3125 3575
-Wire Wire Line
-	3900 3575 3900 3125
-Wire Wire Line
-	2900 3125 3900 3125
 Wire Wire Line
 	2550 1025 2450 1025
 Wire Wire Line
@@ -334,8 +269,6 @@ $EndComp
 Wire Wire Line
 	4775 1550 4775 1500
 Connection ~ 4775 1550
-Wire Wire Line
-	6150 2375 7150 2375
 $Comp
 L Device:R R5
 U 1 1 61613E1F
@@ -347,7 +280,6 @@ F 3 "~" H 5275 2925 50  0001 C CNN
 	1    5275 2925
 	-1   0    0    1   
 $EndComp
-Connection ~ 6150 2375
 Connection ~ 6150 3075
 Text GLabel 5975 2675 0    50   Input ~ 0
 PHASE1
@@ -361,8 +293,6 @@ Text GLabel 7275 1675 2    50   Input ~ 0
 PHASE3
 Wire Wire Line
 	7275 1675 7150 1675
-Wire Wire Line
-	7150 2175 6625 2175
 Wire Wire Line
 	6625 2175 6625 2275
 Wire Wire Line
@@ -411,9 +341,6 @@ F 3 "" H 3125 1200 50  0001 C CNN
 $EndComp
 Text GLabel 7275 2175 2    50   Input ~ 0
 ENABLE
-Wire Wire Line
-	7275 2175 7150 2175
-Connection ~ 7150 2175
 Text GLabel 6050 2175 0    50   Input ~ 0
 HALL1
 Text GLabel 6050 2075 0    50   Input ~ 0
@@ -542,8 +469,6 @@ Wire Wire Line
 	5275 3075 5375 3075
 Wire Wire Line
 	5275 2375 5275 2775
-Wire Wire Line
-	5275 2375 6150 2375
 Wire Wire Line
 	6150 2475 4500 2475
 Wire Wire Line
@@ -746,8 +671,6 @@ Wire Wire Line
 Wire Wire Line
 	5300 1550 5000 1550
 Connection ~ 5000 1550
-Wire Wire Line
-	5300 1575 6150 1575
 $Comp
 L Device:CP C3
 U 1 1 615C8FC6
@@ -761,14 +684,11 @@ F 3 "~" H 3550 3725 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	3125 3875 3550 3875
-Connection ~ 3550 3875
-Wire Wire Line
-	3550 3875 3900 3875
 $Comp
-L Device:R R?
+L Device:R R7
 U 1 1 615C6A29
 P 5150 2925
-F 0 "R?" H 5300 2900 50  0000 R CNN
+F 0 "R7" H 5300 2900 50  0000 R CNN
 F 1 "1R" H 5300 2975 50  0000 R CNN
 F 2 "Resistor_SMD:R_0805_2012Metric" V 5080 2925 50  0001 C CNN
 F 3 "~" H 5150 2925 50  0001 C CNN
@@ -776,10 +696,10 @@ F 3 "~" H 5150 2925 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L Device:R R?
+L Device:R R13
 U 1 1 615C6F4F
 P 5375 2925
-F 0 "R?" H 5305 2879 50  0000 R CNN
+F 0 "R13" H 5305 2879 50  0000 R CNN
 F 1 "1R" H 5305 2970 50  0000 R CNN
 F 2 "Resistor_SMD:R_0805_2012Metric" V 5305 2925 50  0001 C CNN
 F 3 "~" H 5375 2925 50  0001 C CNN
@@ -797,4 +717,161 @@ Wire Wire Line
 Connection ~ 5275 2775
 Wire Wire Line
 	5375 2775 5275 2775
+$Comp
+L reprapltd-kicad:L6235PD U1
+U 1 1 616A35F1
+P 6650 2125
+F 0 "U1" H 6650 3200 50  0000 C CNN
+F 1 "L6235PD" H 6650 3109 50  0000 C CNN
+F 2 "reprapltd-kicad:SOIC-36_11mmx16mmx3.6mm" H 6650 2125 50  0001 C CNN
+F 3 "" H 6650 2125 50  0001 C CNN
+	1    6650 2125
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5275 2375 6150 2375
+Wire Wire Line
+	6625 2175 7150 2175
+Wire Wire Line
+	5300 1575 6150 1575
+Connection ~ 7150 2175
+Wire Wire Line
+	7150 2175 7275 2175
+Wire Wire Line
+	6650 3125 6800 3125
+Wire Wire Line
+	6800 3125 6800 3075
+Connection ~ 6800 3075
+Wire Wire Line
+	6800 3075 7150 3075
+$Comp
+L L6235-breakout-rescue:7805DT-adafruit-new IC1
+U 1 1 616EDC10
+P 5625 4075
+F 0 "IC1" H 5625 4329 45  0000 C CNN
+F 1 "7805DT" H 5625 4245 45  0000 C CNN
+F 2 "Package_TO_SOT_SMD:TO-252-2" H 5655 4225 20  0001 C CNN
+F 3 "" H 5625 4075 50  0001 C CNN
+	1    5625 4075
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR0104
+U 1 1 616EFB17
+P 6200 4075
+F 0 "#PWR0104" H 6200 3925 50  0001 C CNN
+F 1 "+5V" H 6215 4248 50  0000 C CNN
+F 2 "" H 6200 4075 50  0001 C CNN
+F 3 "" H 6200 4075 50  0001 C CNN
+	1    6200 4075
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C4
+U 1 1 616F017A
+P 6325 4225
+F 0 "C4" H 6440 4271 50  0000 L CNN
+F 1 "0.1u" H 6440 4180 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 6363 4075 50  0001 C CNN
+F 3 "~" H 6325 4225 50  0001 C CNN
+	1    6325 4225
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:VSS #PWR0107
+U 1 1 616F094C
+P 5025 4075
+F 0 "#PWR0107" H 5025 3925 50  0001 C CNN
+F 1 "VSS" H 5040 4248 50  0000 C CNN
+F 2 "" H 5025 4075 50  0001 C CNN
+F 3 "" H 5025 4075 50  0001 C CNN
+	1    5025 4075
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C9
+U 1 1 616F1027
+P 6775 4225
+F 0 "C9" H 6893 4271 50  0000 L CNN
+F 1 "100u" H 6893 4180 50  0000 L CNN
+F 2 "Capacitor_THT:C_Radial_D8.0mm_H7.0mm_P3.50mm" H 6813 4075 50  0001 C CNN
+F 3 "~" H 6775 4225 50  0001 C CNN
+	1    6775 4225
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2475 3800 2925 3800
+Wire Wire Line
+	5025 4075 5225 4075
+$Comp
+L power:GND #PWR0115
+U 1 1 616F6BB6
+P 5625 4425
+F 0 "#PWR0115" H 5625 4175 50  0001 C CNN
+F 1 "GND" H 5630 4252 50  0000 C CNN
+F 2 "" H 5625 4425 50  0001 C CNN
+F 3 "" H 5625 4425 50  0001 C CNN
+	1    5625 4425
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5625 4375 5625 4425
+Wire Wire Line
+	6025 4075 6200 4075
+Wire Wire Line
+	6200 4075 6325 4075
+Connection ~ 6200 4075
+Wire Wire Line
+	6775 4075 6325 4075
+Connection ~ 6325 4075
+Wire Wire Line
+	6775 4375 6325 4375
+Wire Wire Line
+	6325 4375 5625 4375
+Connection ~ 6325 4375
+Connection ~ 5625 4375
+$Comp
+L Mechanical:MountingHole H4
+U 1 1 616F56E4
+P 8350 4850
+F 0 "H4" H 8450 4896 50  0000 L CNN
+F 1 "MountingHole" H 8450 4805 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3" H 8350 4850 50  0001 C CNN
+F 3 "~" H 8350 4850 50  0001 C CNN
+	1    8350 4850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H?
+U 1 1 617216E4
+P 7900 5250
+F 0 "H?" H 8000 5296 50  0000 L CNN
+F 1 "MountingHole" H 8000 5205 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3" H 7900 5250 50  0001 C CNN
+F 3 "~" H 7900 5250 50  0001 C CNN
+	1    7900 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H?
+U 1 1 61721E3F
+P 7900 5850
+F 0 "H?" H 8000 5896 50  0000 L CNN
+F 1 "MountingHole" H 8000 5805 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3" H 7900 5850 50  0001 C CNN
+F 3 "~" H 7900 5850 50  0001 C CNN
+	1    7900 5850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H?
+U 1 1 6172253A
+P 9000 5750
+F 0 "H?" H 9100 5796 50  0000 L CNN
+F 1 "MountingHole" H 9100 5705 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3" H 9000 5750 50  0001 C CNN
+F 3 "~" H 9000 5750 50  0001 C CNN
+	1    9000 5750
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
