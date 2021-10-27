@@ -833,45 +833,45 @@ Connection ~ 5625 4375
 $Comp
 L Mechanical:MountingHole H4
 U 1 1 616F56E4
-P 8350 4850
-F 0 "H4" H 8450 4896 50  0000 L CNN
-F 1 "MountingHole" H 8450 4805 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.2mm_M3" H 8350 4850 50  0001 C CNN
-F 3 "~" H 8350 4850 50  0001 C CNN
-	1    8350 4850
+P 1150 1200
+F 0 "H4" H 1250 1246 50  0000 L CNN
+F 1 "MountingHole" H 1250 1155 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3" H 1150 1200 50  0001 C CNN
+F 3 "~" H 1150 1200 50  0001 C CNN
+	1    1150 1200
 	1    0    0    -1  
 $EndComp
 $Comp
 L Mechanical:MountingHole H1
 U 1 1 617216E4
-P 7900 5250
-F 0 "H1" H 8000 5296 50  0000 L CNN
-F 1 "MountingHole" H 8000 5205 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.2mm_M3" H 7900 5250 50  0001 C CNN
-F 3 "~" H 7900 5250 50  0001 C CNN
-	1    7900 5250
+P 1525 875
+F 0 "H1" H 1625 921 50  0000 L CNN
+F 1 "MountingHole" H 1625 830 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3" H 1525 875 50  0001 C CNN
+F 3 "~" H 1525 875 50  0001 C CNN
+	1    1525 875 
 	1    0    0    -1  
 $EndComp
 $Comp
 L Mechanical:MountingHole H2
 U 1 1 61721E3F
-P 7900 5850
-F 0 "H2" H 8000 5896 50  0000 L CNN
-F 1 "MountingHole" H 8000 5805 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.2mm_M3" H 7900 5850 50  0001 C CNN
-F 3 "~" H 7900 5850 50  0001 C CNN
-	1    7900 5850
+P 1150 875
+F 0 "H2" H 1250 921 50  0000 L CNN
+F 1 "MountingHole" H 1250 830 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3" H 1150 875 50  0001 C CNN
+F 3 "~" H 1150 875 50  0001 C CNN
+	1    1150 875 
 	1    0    0    -1  
 $EndComp
 $Comp
 L Mechanical:MountingHole H3
 U 1 1 6172253A
-P 9000 5750
-F 0 "H3" H 9100 5796 50  0000 L CNN
-F 1 "MountingHole" H 9100 5705 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.2mm_M3" H 9000 5750 50  0001 C CNN
-F 3 "~" H 9000 5750 50  0001 C CNN
-	1    9000 5750
+P 1525 1200
+F 0 "H3" H 1625 1246 50  0000 L CNN
+F 1 "MountingHole" H 1625 1155 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3" H 1525 1200 50  0001 C CNN
+F 3 "~" H 1525 1200 50  0001 C CNN
+	1    1525 1200
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC
