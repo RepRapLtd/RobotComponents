@@ -745,17 +745,6 @@ Connection ~ 6800 3075
 Wire Wire Line
 	6800 3075 7150 3075
 $Comp
-L L6235-breakout-rescue:7805DT-adafruit-new IC1
-U 1 1 616EDC10
-P 5625 4075
-F 0 "IC1" H 5625 4329 45  0000 C CNN
-F 1 "7805DT" H 5625 4245 45  0000 C CNN
-F 2 "Package_TO_SOT_SMD:TO-252-2" H 5655 4225 20  0001 C CNN
-F 3 "" H 5625 4075 50  0001 C CNN
-	1    5625 4075
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:+5V #PWR0104
 U 1 1 616EFB17
 P 6200 4075
@@ -801,8 +790,6 @@ F 3 "~" H 6775 4225 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	2475 3800 2925 3800
-Wire Wire Line
-	5025 4075 5225 4075
 $Comp
 L power:GND #PWR0115
 U 1 1 616F6BB6
@@ -817,8 +804,6 @@ $EndComp
 Wire Wire Line
 	5625 4375 5625 4425
 Wire Wire Line
-	6025 4075 6200 4075
-Wire Wire Line
 	6200 4075 6325 4075
 Connection ~ 6200 4075
 Wire Wire Line
@@ -829,7 +814,6 @@ Wire Wire Line
 Wire Wire Line
 	6325 4375 5625 4375
 Connection ~ 6325 4375
-Connection ~ 5625 4375
 $Comp
 L Mechanical:MountingHole H4
 U 1 1 616F56E4
@@ -874,4 +858,20 @@ F 3 "~" H 1525 1200 50  0001 C CNN
 	1    1525 1200
 	1    0    0    -1  
 $EndComp
+$Comp
+L Regulator_Linear:L7805 U2
+U 1 1 61E6127E
+P 5625 4075
+F 0 "U2" H 5625 4317 50  0000 C CNN
+F 1 "L7805" H 5625 4226 50  0000 C CNN
+F 2 "Package_TO_SOT_SMD:TO-252-2" H 5650 3925 50  0001 L CIN
+F 3 "http://www.st.com/content/ccc/resource/technical/document/datasheet/41/4f/b3/b0/12/d4/47/88/CD00000444.pdf/files/CD00000444.pdf/jcr:content/translations/en.CD00000444.pdf" H 5625 4025 50  0001 C CNN
+	1    5625 4075
+	1    0    0    -1  
+$EndComp
+Connection ~ 5625 4375
+Wire Wire Line
+	5925 4075 6200 4075
+Wire Wire Line
+	5025 4075 5325 4075
 $EndSCHEMATC
