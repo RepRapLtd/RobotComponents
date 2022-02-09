@@ -1,4 +1,4 @@
-/*
+ /*
 
 Simple control program for the motor controller.
 
@@ -64,6 +64,7 @@ void MeasureSpeed(int seconds)
     
     if(s ^ state)
     {
+      state = s;
       if(s == 0)
       {
         t = t - lastTime;
@@ -117,6 +118,10 @@ void loop()
       case 't':
         seconds = Serial.parseInt();
         MeasureSpeed(seconds);
+        break;
+
+      case '\r':
+      case '\n':
         break;
         
       default:
